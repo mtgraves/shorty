@@ -1,0 +1,21 @@
+{% extends "base.html" %} 
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block app_content %}
+<h1>Shorty</h1>
+<h3>...for lazifying your URLs</h3>
+<div>
+    <form action=""i method="post" class='form'>
+
+        {{ form.hidden_tag() }}
+
+        {{ wtf.form_field(form.enter_link) }}
+
+        {{ wtf.form_field(form.request_url_suffix_true) }}
+        {{ wtf.form_field(form.request_url_suffix) }}
+
+        {{ wtf.form_field(form.submit) }}
+
+    </form>
+</div>
+{% endblock %}

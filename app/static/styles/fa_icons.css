@@ -1,0 +1,39 @@
+
+/* ============================================================================
+ *      set hover properties
+ * ==========================================================================*/
+.fa_icon_btn:hover,
+.view_po_btn:hover,
+.edit_po_admin_btn:hover,
+.lock_processing_po_btn:hover,
+.flag_as_chemical_btn:hover,
+.remove_from_cart_btn:hover,
+.cart_added_navbtn:hover,
+.unlock_processing_po_btn:hover,
+.remove_attachment_btn:hover,
+.download_attachment_btn:hover,
+.reload_attachment_btn:hover{
+    color: #a64dff;
+    cursor: pointer;
+}
+
+
+/* ============================================================================
+ *      set font-awesome button styles
+ * ==========================================================================*/
+.fa_icon_btn,
+.view_po_btn,
+.edit_po_admin_btn,
+.lock_processing_po_btn,
+.flag_as_chemical_btn,
+.remove_from_cart_btn,
+.cart_added_navbtn,
+.unlock_processing_po_btn,
+.remove_attachment_btn,
+.download_attachment_btn,
+.reload_attachment_btn{
+    border: none;
+    background: none;
+}
+
+

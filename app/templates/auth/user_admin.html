@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+<h1>Accounts needing approval</h1>
+{% if pending_accounts|length == 0 %}
+<p>There are currently no accounts needing approval</p>
+{% else %}
+<table id='pending_user_accounts_table' class='body_table'>
+    <thead align='left'>
+        <th width='9%'></th>
+        <th width='9%'></th>
+        <th width='32%'>Name</th>
+        <th width='18%'>Username</th>
+        <th width='32%'>Email</th>
+    </thead>
+    {% for account in pending_accounts %}
+    <tr style='width:100%'>
+        <td>
+            <button class="fa_icon_btn"
+                    onclick="window.location.href='{{url_for("auth.useradmin")}}/enable_account/{{account.id}}'"> 
+                <span class="fa fa-lg fa-thumbs-up"></span>
+            </button>
+        </td>
+        <td>
+            <button class="fa_icon_btn"
+                    onclick="window.location.href='{{url_for("auth.useradmin")}}/disable_account/{{account.id}}'"> 
+                <span class="fa fa-lg fa-thumbs-down"></span>
+            </button>
+        </td>
+        <td>
+            {{account.lastname}},{{account.firstname}}
+        </td>
+        <td>
+            {{account.username}}
+        </td>
+        <td>
+            {{account.email}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<h1>Active users</h1>
+{% if active_accounts|length == 0 %}
+<p>There are currently no active accounts</p>
+{% else %}
+<table id='active_user_accounts_table' class='body_table'>
+    <thead align='left'>
+        <th width='9%'></th>
+        <th width='9%'></th>
+        <th width='32%'>Name</th>
+        <th width='18%'>Username</th>
+        <th width='32%'>Email</th>
+    </thead>
+    {% for account in active_accounts %}
+    <tr style='width:100%'>
+        <td>
+            <button class="fa_icon_btn"
+                    onclick="window.location.href='{{url_for("auth.useradmin")}}/edit_account/{{account.id}}'"> 
+                <span class="fa fa-lg fa-edit"></span>
+            </button>
+        </td>
+        <td>
+            <button class="fa_icon_btn"
+                    onclick="window.location.href='{{url_for("auth.useradmin")}}/disable_account/{{account.id}}'"> 
+                <span class="fa fa-lg fa-ban"></span>
+            </button>
+        </td>
+        <td>
+            {{account.lastname}},{{account.firstname}}
+        </td>
+        <td>
+            {{account.username}}
+        </td>
+        <td>
+            {{account.email}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+<h1>Disabled/denied users</h1>
+{% if disabled_accounts|length == 0 %}
+<p>There are currently no disabled accounts</p>
+{% else %}
+<table id='disabled_user_accounts_table' class='body_table'>
+    <thead align='left'>
+        <th width='9%'></th>
+        <th width='9%'></th>
+        <th width='32%'>Name</th>
+        <th width='18%'>Username</th>
+        <th width='32%'>Email</th>
+    </thead>
+    {% for account in disabled_accounts %}
+    <tr style='width:100%'>
+        <td>
+            <button class="fa_icon_btn"
+                    onclick="window.location.href='{{url_for("auth.useradmin")}}/edit_account/{{account.id}}'"> 
+                <span class="fa fa-lg fa-edit"></span>
+            </button>
+        </td>
+        <td>
+            <button class="fa_icon_btn"
+                    onclick="window.location.href='{{url_for("auth.useradmin")}}/enable_account/{{account.id}}'"> 
+                <span class="fa fa-lg fa-refresh"></span>
+            </button>
+        </td>
+        <td>
+            {{account.lastname}},{{account.firstname}}
+        </td>
+        <td>
+            {{account.username}}
+        </td>
+        <td>
+            {{account.email}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}

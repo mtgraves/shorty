@@ -1,0 +1,10 @@
+#roles ul,
+#roles li {
+    list-style-type: none;
+}
+
+#edit_user_info_table td {
+    padding-left:8px;
+    padding-right:8px;
+}
+

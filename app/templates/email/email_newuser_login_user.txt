@@ -1,0 +1,7 @@
+Your account request has been generated for the the {{ g.app_name }} system.
+
+The administrators for this application have been notified.  You will receive an email notification
+if your account is approved for this system, after which you will be able to log in using your AD
+(Windows) credentials.
+
+Please do not reply to this e-mail.

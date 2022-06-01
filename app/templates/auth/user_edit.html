@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block head %}
+{{ super() }}
+<link href="{{ url_for('static', filename='styles/useradmin.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block app_content %}
+
+<button class='fa_icon_btn'
+    onclick="window.location.href='{{url_for("auth.useradmin")}}'"> 
+    <span class="fa fa-2x fa-arrow-left"></span>
+    Back to user account admin page
+</button>
+
+<h1>Edit User Account</h1>
+
+<form action="" method="post">
+    {{ roles_form.hidden_tag() }}
+    <table id='edit_user_info_table'>
+        <tr>
+            <td align='right'><b>Name:</b></td>
+            <td>{{user.lastname}}, {{user.firstname}}</td>
+        </tr>
+        <tr>
+            <td align='right'><b>Username:</b></td>
+            <td>{{user.username }}</td>
+        </tr>
+        <tr>
+            <td align='right'><b>Email:</b></td>
+            <td>{{user.email}}</td>
+        </tr>
+        <tr>
+            <td align='right'><b>Phone:</b></td>
+            <td>{{user.phone}}</td>
+        </tr>
+        <tr>
+            <td align='right'>{{ roles_form.roles.label }}:</td>
+            <td> 
+                {{ roles_form.roles() }}
+                {% for error in roles_form.roles.errors %}
+                <span style="color:red;">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+    </table>
+
+    {{ roles_form.submit }}
+
+</form>
+
+{% endblock %}

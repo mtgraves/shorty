@@ -1,0 +1,181 @@
+---
+- name: Set up OS and Python
+  hosts: all
+  become: true
+  vars:
+    flare_db_default_name: "shorty"
+    flare_db_dev_username: ""
+    flare_db_dev_password: ""
+    flare_db_flaskapp_username: ""
+    flare_db_flaskapp_password: ""
+
+  tasks:
+  - name: Update Yum
+    yum:
+      name: "*" 
+      state: latest
+
+  - name: install yum utils
+    yum:
+      name: yum-utils
+      state: present
+
+  - name: install development tools
+    yum:
+      name: "@Development tools"
+      state: present
+
+  - name: install ius release
+    yum:
+      name: https://centos7.iuscommunity.org/ius-release.rpm
+      state: present
+
+  - name: install python36
+    yum:
+      name: python36u
+      state: present
+
+  - name: install pip36
+    yum:
+      name: python36u-pip
+      state: latest
+
+  - name: install python36 development libs
+    yum:
+      name: python36u-devel
+      state: latest
+
+  - name: install openldap development libs
+    yum:
+      name: openldap-devel
+      state: latest
+
+  - name: install vim (just because...)
+    yum:
+      name: vim
+      state: latest
+
+  - name: upgrade pip36 to latest version
+    pip:
+      name: pip
+      extra_args: --upgrade
+      executable: pip3.6
+
+  - name: install python ldap module
+    pip:
+      name: python-ldap
+      executable: pip3.6
+
+  - name: install flask (python web app microframework)
+    pip:
+      name: flask
+      executable: pip3.6
+
+  - name: install flask-wtf (allows use of WTForms)
+    pip:
+      name: flask-wtf
+      executable: pip3.6
+
+  - name: install flask-sqlalchemy (allows database ORM layer) 
+    pip:
+      name: flask-sqlalchemy
+      executable: pip3.6
+
+  - name: install flask-login (handles authentication)
+    pip:
+      name: flask-login
+      executable: pip3.6
+
+  - name: install flask-principal (handles permissions)
+    pip:
+      name: flask-principal
+      executable: pip3.6
+
+  - name: install flask-uploads (facilitates file uploads)
+    pip:
+      name: flask-uploads
+      executable: pip3.6
+
+  - name: install flask-mail (facilitates email functionality)
+    pip:
+      name: flask-mail
+      executable: pip3.6
+
+  - name: install flask-moment (handles timezone conversion)
+    pip:
+      name: flask-moment
+      executable: pip3.6
+
+  - name: install flask-bootstrap (allows simple use of bootstrap)
+    pip:
+      name: flask-bootstrap
+      executable: pip3.6
+
+  - name: install pymysql for python3 (for app connection to mysql)
+    pip:
+      name: pymysql
+      executable: pip3.6
+
+  - name: install elasticsearch (full-text search functionality)
+    pip:
+      name: elasticsearch
+      executable: pip3.6
+
+  - name: Install MYSQL server
+    yum:
+      name: mariadb-server
+      state: latest
+  
+  - name: start mariadb-server and enable it on reboot
+    service: 
+      name: mariadb 
+      state: started 
+      enabled: true
+  
+  - name: copy bashrc to server
+    copy:
+      src: files/.bashrc
+      dest: /home/vagrant/
+  
+  - name: set database connection string in bashrc
+    replace:
+      path: /home/vagrant/.bashrc
+      regexp: 'DATABASE_URI='
+      replace: "DATABASE_URI='mysql+pymysql://{{ flare_db_flaskapp_username }}:{{ flare_db_flaskapp_password }}@localhost/{{ flare_db_default_name }}'"
+
+  - name: copy database dump file to server
+    copy:
+      src: files/db_restore_file.sql
+      dest: /tmp
+
+  - name: set database name in sql dump file to '{{ desired_db_name }}'
+    replace:
+      path: /tmp/db_restore_file.sql
+      regexp: 'flare_db_default_name'
+      replace: "{{ flare_db_default_name }}"
+
+  - name: Set ansible python interpreter to python3.6
+    set_fact:
+      ansible_python_interpreter: python3.6
+
+  - name: create database and tables
+    mysql_db:
+      state: import
+      name: all
+      target: /tmp/db_restore_file.sql 
+
+  - name: create mysql user/pass for development
+    mysql_user:
+      host: "%"
+      name: "{{flare_db_dev_username}}"
+      password: "{{flare_db_dev_password}}"
+      priv: '{{flare_db_default_name}}.*:ALL'
+      state: present
+
+  - name: create mysql user/pass for flask application
+    mysql_user:
+      name: "{{flare_db_flaskapp_username}}"
+      password: "{{flare_db_flaskapp_password}}"
+      priv: '{{flare_db_default_name}}.*:ALL'
+      state: present
+
